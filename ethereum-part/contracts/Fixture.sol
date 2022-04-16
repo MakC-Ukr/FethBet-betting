@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./LargeDataAPI.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Strings.sol#L15-L35";
-import "https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/ChainlinkClient.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 
 contract Fixture is ChainlinkClient
@@ -19,24 +18,27 @@ contract Fixture is ChainlinkClient
     uint public time;
     mapping (address => uint) public homeBets;
     mapping (address => uint) public awayBets;
-    bool public isFinished = false;
-    bool public isCancelled = true; // if a match is cancelled, then the betters can withdraw their funds
+    bool public isFinished = true; // needs to be set to false actually. temporarily set to true for testing purposes
+    bool public isCancelled = false; // if a match is cancelled, then the betters can withdraw their funds
     uint public homeSum = 0+1; // 1 is initialized for zero division error
     uint public awaySum = 0+1; 
-    uint public winner; // 1 means home , 2 means draw, 3 means away
+    uint public winner ; // 1 means home , 2 means draw, 3 means away
     string public homeScore; // => private
     string public awayScore; // => private
     uint public homeScoreInt; // => private
     uint public awayScoreInt; // => private
     string public stringTemp ; // => private
+    uint private checkedResultTimestamp = 99999999999999;
+
+    event ReceivedResult(uint a, uint b);
 
     constructor(uint _leagueId, uint _eventId, uint _time)
     {
+        // require(_time > block.timestamp); // events in the past shall not be allowed to added because we would waste LINK tokens from the pool
         routerAddress = msg.sender;
         leagueId = _leagueId;
         eventId = _eventId;
         time = _time;
-
         setChainlinkToken(0xa36085F69e2889c224210F603D836748e7dC0088);
         setChainlinkOracle(0x74EcC8Bdeb76F2C6760eD2dc8A46ca5e581fA656);
     }
@@ -64,7 +66,12 @@ contract Fixture is ChainlinkClient
     {
         _requestHomeScore();
         _requestAwayScore();
+        checkedResultTimestamp = block.number;
+    }
 
+    function decideWinner() public
+    {
+        require(block.number > checkedResultTimestamp + 1, "decideWinner can be called only 1 block after checkResult. Try again in few seconds"); // this is done with the goal of lettting the chainlink node to update data
         _convertHomeScoresToInt();
         _convertAwayScoresToInt();
 
@@ -74,13 +81,18 @@ contract Fixture is ChainlinkClient
             winner = 2;
         else
             winner = 3;
+        if(block.timestamp > time)
+            isFinished = true;
+        else
+            isFinished = true; // intentional mistake made for easier testing
+        emit ReceivedResult(homeScoreInt, awayScoreInt);
     }
 
     function _convertHomeScoresToInt() private{
-        bytes memory b = bytes(homeScore);
-        for(uint8 i = 0 ; i < b.length; i++)
+        bytes memory a = bytes(homeScore);
+        for(uint8 i = 0 ; i < a.length; i++)
         {
-            uint c = uint8(b[i]);
+            uint c = uint8(a[i]);
             if (c >= 48 && c <= 57) 
             {
                 homeScoreInt = homeScoreInt * 10 + (c - 48);
@@ -135,12 +147,12 @@ contract Fixture is ChainlinkClient
 
     function getWinnings() public{
         // require(block.timestamp > time + 1 hours, "winnnings can only be withdrawn 1 hour after the match");
-        require(! isCancelled);
-        require(isFinished);
-        uint toSend;
+        require(! isCancelled, "the fixing was cancelled");
+        require(isFinished, "the match needs to be finished before claiming prizes");
+        uint toSend = 0;
         if(winner == 1){
             toSend = homeBets[msg.sender] *  (homeSum + awaySum) ;
-            toSend = toSend / (awaySum);
+            toSend = toSend / (homeSum);
             homeBets[msg.sender]=0;
         }
         else if(winner == 2)
@@ -175,7 +187,6 @@ contract Fixture is ChainlinkClient
         }
     }
 
-
     function cancelMatch() external
     {
         require(msg.sender == routerAddress);
@@ -194,7 +205,6 @@ contract Fixture is ChainlinkClient
         awayBets[msg.sender] = 0;
         payable(msg.sender).transfer(toSend);
     }
-
 
     event RequestFulfilled(
         bytes32 indexed requestId,
@@ -223,8 +233,18 @@ contract Fixture is ChainlinkClient
         else
             return (res, false);
     } 
+
+    /* 
+        When the last eth for the bet is withdrawn from the pool, the LINK tokens from the fixture will be 
+        returned to the link pool.
+    */
+
+    function returnLinkTokens()  public // To be implemented and later called when homeSum + awaySum == 0 if isFinished
+    {
+        
+    }
 }
 
 
 
-// 1,1154245,69696969
+// 1,1154110,69696969
