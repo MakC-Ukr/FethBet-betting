@@ -1,9 +1,12 @@
 import React from "react";
 import "./GoToApp.css"
 import { Button } from 'web3uikit';
-import logo from '../../images/logo.png'
+import logo from '../../components/images/logo.png'
+import { useNavigate } from "react-router";
+
 
 const GoToApp = () => {
+    let navigate = useNavigate();
 
     return (
         <div className="features-8">
@@ -17,7 +20,7 @@ const GoToApp = () => {
                 <Button
                     color="red"
                     id="test-button-primary-large"
-                    onClick={function noRefCheck(){}}
+                    onClick={() => {navigate("/app")}}
                     text="Go to App"
                     theme="colored"
                     type="button"

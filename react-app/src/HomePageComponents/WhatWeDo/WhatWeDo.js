@@ -1,8 +1,8 @@
 import React from "react";
 import "./WhatWeDo.css";
-import icon1 from "../../icons/icon1.svg"
-import icon2 from "../../icons/icon2.svg"
-import icon3 from "../../icons/icon3.svg"
+import icon1 from "../../components/icons/icon1.svg"
+import icon2 from "../../components/icons/icon2.svg"
+import icon3 from "../../components/icons/icon3.svg"
 
 
 class WhatWeDo extends React.Component {
