@@ -15,3 +15,6 @@ So in our Firebase Database we might have to use a couple of tables. As of now I
 			-winnerBets
 				- homeBets
 				- awayBets
+
+
+3. For frontend's basic services we might use thirdweb. After all, why reinvent the wheel every time. BE more efficient.

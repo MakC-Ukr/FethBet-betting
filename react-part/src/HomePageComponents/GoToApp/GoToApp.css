@@ -1,0 +1,32 @@
+.features-8 {
+    background-color: #252b42;
+    height: 150px;
+    overflow: hidden;
+    padding:0;
+    position:relative;
+    /* width: 1050px; */
+  }
+
+.firstRow
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.socialMediaCss{
+    align-self: flex-end;
+}
+
+/* .secondRow
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+} */
+
+.mainButton
+{
+    display: flex;
+    justify-content: center;
+}

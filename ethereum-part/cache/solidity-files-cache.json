@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/maksimchowdhary/Desktop/Coding/Web3/betting-decentralized/ethereum-part/contracts/FethBetRouter.sol": {
-      "lastModificationDate": 1650136089342,
-      "contentHash": "3c3a908baaaba8e512ff88e7fcca0874",
+      "lastModificationDate": 1650136647959,
+      "contentHash": "eae19bfb7551a087a2cb5ae5f4e67d10",
       "sourceName": "contracts/FethBetRouter.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -37,7 +37,7 @@
         "^0.8.0"
       ],
       "artifacts": [
-        "Fethball"
+        "FethBetRouter"
       ]
     },
     "/Users/maksimchowdhary/Desktop/Coding/Web3/betting-decentralized/ethereum-part/contracts/Fixture.sol": {

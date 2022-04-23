@@ -5,7 +5,7 @@ import "./Fixture.sol";
 import "./LinkPool.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract Fethball is AccessControl
+contract FethBetRouter is AccessControl
 {
     bytes32 public constant AUDITOR_ROLE = keccak256("AUDITOR_ROLE");
     mapping (uint => address) public fixturesDeployed; 

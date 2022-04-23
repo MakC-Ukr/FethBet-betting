@@ -1,0 +1,146 @@
+.main-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 127px;
+    width: 864px;
+  }
+
+  .features-5 {
+    align-items: center;
+    background-color: #252b42;
+    display: flex;
+    height: 529px;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    /* width: 1050px; */
+  }
+  
+  .container1 {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    /* height: 549px; */
+    margin-bottom: -20px;
+  }
+  
+  .row {
+    align-items: flex-start;
+    display: flex;
+    width: 864px;
+    height: 200px;
+  }
+  
+  .h2 {
+    color: #FFFFFF;
+    font-weight: 700;
+    line-height: 57px;
+    min-height: 57px;
+    min-width: 264px;
+    white-space: nowrap;
+  }
+  
+  .paragraph {
+    color: #FFFFFF;
+    font-weight: 500;
+    line-height: 20px;
+    margin-top: 10px;
+    min-height: 60px;
+    min-width: 847px;
+    text-align: center;
+  }
+  
+  .row-1 {
+    align-items: flex-start;
+    display: flex;
+    margin-top: 80px;
+    width: 1000px;
+    padding: 0 1.5px;
+    height: 50px;
+  }
+  
+  .card-item {
+    align-items: center;
+    background-color: #f8F8F8;
+    border-radius: 5px;
+    box-shadow: 0px 13px 19px #00000012;
+    display: flex;
+    flex-direction: column;
+    height: 142px;
+    overflow: hidden;
+    width: 325px;
+  }
+  
+  .icn-settings-icn-lg {
+    height: 48px;
+    width: 48px;
+  }
+  
+  .h5 {
+    color: #252b42;
+    font-weight: 700;
+    line-height: 24px;
+    margin-top: 10px;
+    min-height: 24px;
+    min-width: 118px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .card-item-1 {
+    align-items: center;
+    background-color: #0d5c63;
+    border-radius: 5px;
+    box-shadow: 0px 13px 19px #00000012;
+    display: flex;
+    flex-direction: column;
+    height: 142px;
+    margin-left: 34px;
+    overflow: hidden;
+    padding: 30px 138px;
+    width: 325px;
+  }
+  
+  .h5-1 {
+    align-self: center;
+    color: #FFFFFF;
+    font-weight: 700;
+    line-height: 24px;
+    margin-top: 10px;
+    min-height: 24px;
+    min-width: 32px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .card-item-2 {
+    align-items: center;
+    background-color: #f8F8F8;
+    border-radius: 5px;
+    box-shadow: 0px 13px 19px #00000012;
+    display: flex;
+    flex-direction: column;
+    height: 142px;
+    margin-left: 34px;
+    overflow: hidden;
+    padding: 30px 0;
+    width: 325px;
+  }
+  
+  .icn-settings-icn-lg-1 {
+    height: 48px;
+    margin-right: 1px;
+    width: 48px;
+  }
+  
+  .h5-2 {
+    color: #252b42;
+    font-weight: 700;
+    line-height: 24px;
+    margin-top: 10px;
+    min-height: 24px;
+    min-width: 144px;
+    text-align: center;
+    white-space: nowrap;
+  }

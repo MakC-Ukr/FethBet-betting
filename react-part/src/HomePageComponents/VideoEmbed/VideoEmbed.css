@@ -1,0 +1,15 @@
+.features-6V {
+    align-items: center;
+    background-color: #252b42;
+    display: flex;
+    height: 300px;
+    overflow: scroll;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.containerV {
+    height: 299px;
+    margin-left: 31px;
+    width: 1200px;
+}
