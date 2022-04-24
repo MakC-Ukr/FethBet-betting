@@ -350,5 +350,5 @@ const contractABI = [
     }
   ];
 
-let instance = new web3.eth.Contract(contractABI, '0x6CEfAA58eC574f9ceCF04f33AD42B81880e1FEDd');
+let instance = new web3.eth.Contract(contractABI, '0x829AD8DB0b47Ef70233Bf686e8E456c028371927');
 export default instance;

@@ -171,6 +171,28 @@ contract Fixture is ChainlinkClient
         payable(msg.sender).transfer( toSend );
     }
 
+    function calculateWinnings(address _addr) public view returns (uint)
+    {
+        // require(block.timestamp > time + 1 hours, "winnnings can only be withdrawn 1 hour after the match");
+        require(! isCancelled, "the fixing was cancelled");
+        require(isFinished, "the match needs to be finished before claiming prizes");
+        uint toSend = 0;
+        if(winner == 1){
+            toSend = homeBets[_addr] *  (homeSum + awaySum) ;
+            toSend = toSend / (homeSum);
+        }
+        else if(winner == 2)
+        {
+            toSend = homeBets[_addr] + awayBets[_addr];
+        }
+        else if(winner == 3)
+        {
+            toSend = awayBets[_addr] * (homeSum  + awaySum) ;
+            toSend = toSend / (awaySum);
+        }
+        return toSend;
+    }
+
     function addBet(bool _isHomeBet) public payable
     {
         require(msg.value >= 0.01 ether);

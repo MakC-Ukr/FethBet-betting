@@ -41,8 +41,8 @@
       ]
     },
     "/Users/maksimchowdhary/Desktop/Coding/Web3/betting-decentralized/ethereum-part/contracts/Fixture.sol": {
-      "lastModificationDate": 1650136057436,
-      "contentHash": "7af3ef0db2e8c21a53ba1e6e3053de31",
+      "lastModificationDate": 1650826498504,
+      "contentHash": "daf8c563bd817e33d1f198bd3d8060c0",
       "sourceName": "contracts/Fixture.sol",
       "solcConfig": {
         "version": "0.8.4",
