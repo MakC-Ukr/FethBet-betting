@@ -12,7 +12,7 @@ class VideoEmbed extends React.Component {
               type="text/html"
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/pPEiVvKdZm4?rel=0"
+              src="https://www.youtube.com/embed/pPEiVvKdZm4?rel=0?"
               frameborder="0"
               allowfullscreen="allowfullscreen"
               mozallowfullscreen="mozallowfullscreen"

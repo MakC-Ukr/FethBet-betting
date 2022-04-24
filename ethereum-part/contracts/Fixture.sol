@@ -28,7 +28,7 @@ contract Fixture is ChainlinkClient
     uint public homeScoreInt; // => private
     uint public awayScoreInt; // => private
     string public stringTemp ; // => private
-    uint private checkedResultTimestamp = 99999999999999;
+    uint public checkedResultTimestamp = 99999999999999;
 
     event ReceivedResult(uint a, uint b);
 
@@ -270,3 +270,6 @@ contract Fixture is ChainlinkClient
 
 
 // 1,1154110,69696969
+
+// checkedResultTimestamp's value of 999...999 means that checkResult() has not been yet called
+// winner's value equal to 0 means decideWinner hasn't been called yet

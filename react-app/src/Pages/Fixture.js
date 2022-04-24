@@ -19,8 +19,10 @@ function Fixture() {
     const [currentAccount, setCurrentAccount] = useState('');
     const [alreadyPlacedBetsOnHome, setAlreadyPlacedBetsOnHome] = useState(0);
     const [alreadyPlacedBetsOnAway, setAlreadyPlacedBetsOnAway] = useState(0);
-    const [winnerAfterFinish ,setWinnerAfterFinish] = useState("");
+    const [winnerAfterFinish, setWinnerAfterFinish] = useState("");
     const [winningsCalculateFromContract, setWinningsCalculateFromContract] = useState();
+    const [checkResultHasBeenCalled, setCheckResultHasBeenCalled] = useState(false);
+    const [decideWinnerHasBeenCalled, setDecideWinnerHasBeenCalled] = useState(false);
 
     const connectWalletHandler = async () => {
         const { ethereum } = window;
@@ -61,7 +63,7 @@ function Fixture() {
     }
 
     useEffect(
-        ()=>{
+        () => {
             console.log(isFixtureCreated);
             calculateWinnings();
         }, [isFixtureCreated]
@@ -70,29 +72,42 @@ function Fixture() {
 
     const calculateWinnings = async () => {
         if (isFixtureCreated && matchDetails.strStatus === "Match Finished") {
-            const tempFixtAddr = await fethBetRouter.methods.fixturesDeployed(fixtureId).call();
-            const fixtureTemp = new web3.eth.Contract(fixtureContractAbi, tempFixtAddr)
-            const intHomeScore = matchDetails.intHomeScore;
-            const intAwayScore = matchDetails.intAwayScore;
-            const temp1 = web3.utils.fromWei(await fixtureTemp.methods.homeBets(currentAccount).call());
-            const temp2 = web3.utils.fromWei(await fixtureTemp.methods.awayBets(currentAccount).call());
-            setAlreadyPlacedBetsOnHome(temp1);
-            setAlreadyPlacedBetsOnAway(temp2);
-            let winner = -1;
-            if(intHomeScore > intAwayScore){
-                setWinnerAfterFinish(matchDetails.strHomeTeam + " has won");
-                winner= 1;
+            const checkedResultTimestamp = await fixture.methods.checkedResultTimestamp().call();
+            const winnerInContract = await fixture.methods.winner().call();
+            if (String(checkedResultTimestamp) === "9999999999999999") // contract must be redeployed
+            {
+                setCheckResultHasBeenCalled(false);
             }
-            else if(intHomeScore === intAwayScore){
-                setWinnerAfterFinish("It was a draw. You may collect your bet.");
-                winner = 2;
+            else if (winnerInContract == 0) {
+                setCheckResultHasBeenCalled(true);
+                setDecideWinnerHasBeenCalled(false);
             }
-            else{
-                setWinnerAfterFinish(matchDetails.strAwayTeam+ " has won !");
-                winner = 3;
+            else {
+                setDecideWinnerHasBeenCalled(true);
+                const tempFixtAddr = await fethBetRouter.methods.fixturesDeployed(fixtureId).call();
+                const fixtureTemp = new web3.eth.Contract(fixtureContractAbi, tempFixtAddr)
+                const intHomeScore = matchDetails.intHomeScore;
+                const intAwayScore = matchDetails.intAwayScore;
+                const temp1 = web3.utils.fromWei(await fixtureTemp.methods.homeBets(currentAccount).call());
+                const temp2 = web3.utils.fromWei(await fixtureTemp.methods.awayBets(currentAccount).call());
+                setAlreadyPlacedBetsOnHome(temp1);
+                setAlreadyPlacedBetsOnAway(temp2);
+                let winner = -1;
+                if (intHomeScore > intAwayScore) {
+                    setWinnerAfterFinish(matchDetails.strHomeTeam + " has won");
+                    winner = 1;
+                }
+                else if (intHomeScore === intAwayScore) {
+                    setWinnerAfterFinish("It was a draw. You may collect your bet.");
+                    winner = 2;
+                }
+                else {
+                    setWinnerAfterFinish(matchDetails.strAwayTeam + " has won !");
+                    winner = 3;
+                }
+                const tempRes = await fixture.methods.calculateWinnings(currentAccount).call();
+                setWinningsCalculateFromContract(web3.utils.fromWei(tempRes));
             }
-            const tempRes = await fixture.methods.calculateWinnings(currentAccount).call();
-            setWinningsCalculateFromContract(web3.utils.fromWei(tempRes));
         }
     }
 
@@ -186,23 +201,77 @@ function Fixture() {
         />);
     }
 
-
-    const getWinningCollector = () => {
+    const stepTwoHelper = () => {
         return (
-        <Card>
-            <h2>Match finished !</h2>
-            <h3>{winnerAfterFinish}</h3>
-            <h3>My winnings: {isFixtureCreated ? winningsCalculateFromContract : 0} ETH</h3>
+            <Card>
+                <h2>Step 2: Make the bets available for re-collection by calling decideWinner()</h2>
+                <Button
+                    onClick={async () => {
+                        try {
+                            await fixture.methods.decideWinner().send({
+                                from: currentAccount
+                            });
+                            calculateWinnings();
+                        } catch (err) {
+                            console.log(err);
+                        }
+
+                    }
+                    }
+                    text="decideWinner"
+                    theme="secondary"
+                    type="button"
+                />
+            </Card>
+        );
+    }
+
+    function stepOneHelper() {
+        return (<Card>
+            <h2>Step 1: Get the result in the smart contract by calling checkResult</h2>
             <Button
-                onClick={() => {
-                    getWinnings();
-                }}
-                size="small"
-                text="Get Winnings"
-                theme="primary"
+                onClick={async () => {
+                    try {
+                        await fixture.methods.checkResult().send({
+                            from: currentAccount
+                        });
+                        calculateWinnings();
+                    } catch (err) {
+                        console.log(err);
+                    }
+
+                }
+                }
+                text="Check Result"
+                theme="secondary"
                 type="button"
             />
         </Card>);
+    }
+
+    const getWinningCollector = () => {
+        return (
+            <div style={{ display:"grid", gridRowGap:"10px" }}>
+                {checkResultHasBeenCalled ? "" : stepOneHelper()}
+                {(!checkResultHasBeenCalled && decideWinnerHasBeenCalled) ? "" : stepTwoHelper()}
+                <img></img>
+                <Card>
+                    <h2>Match finished !</h2>
+                    <h3>{winnerAfterFinish}</h3>
+                    <h3>My winnings: {isFixtureCreated ? winningsCalculateFromContract : 0} ETH</h3>
+                    <Button
+                        onClick={() => {
+                            getWinnings();
+                        }}
+                        size="small"
+                        text="Get Winnings"
+                        theme="primary"
+                        type="button"
+                    />
+                </Card>
+
+            </div>
+        );
     }
 
     useEffect(() => {
@@ -233,16 +302,6 @@ function Fixture() {
                         <h4>My bets on Home Team: {alreadyPlacedBetsOnHome} ETH </h4>
                         <h4>My bets on Away Team: {alreadyPlacedBetsOnAway} ETH </h4>
                     </Card>
-
-                    {/* <Button
-                        onClick={() => {
-                            getAlreadyPlacedBets();
-                        }}
-                        size="small"
-                        text="Check"
-                        theme="primary"
-                        type="button"
-                    /> */}
                 </div>
 
                 <div className="rightColumnFixture" style={{ width: "60%" }}>

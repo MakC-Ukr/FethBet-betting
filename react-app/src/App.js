@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import Bet from "./Pages/Bet";
 import ErrorPage from "./Pages/ErrorPage";
 
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,6 +11,7 @@ import {
   // Link
 } from "react-router-dom";
 import Fixture from './Pages/Fixture'
+import AdminCreateFixtures from "./Pages/AdminCreateFixtures";
 
 
 class App extends React.Component {
@@ -20,6 +22,7 @@ class App extends React.Component {
           <Route path="/" element = {<HomePage/>} / >
           <Route path="/app" element = {<Bet/>} /> 
           <Route path="/fixture/:fixtureId" element= {<Fixture/>} />
+          <Route path="/admin" element={<AdminCreateFixtures/>}/>
           <Route path="*" element= {<ErrorPage/>} />
         </Routes>
       </Router>
