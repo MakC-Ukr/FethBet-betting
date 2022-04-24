@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import { Button, Badge, Table } from "web3uikit";
-import Header from "../BetPageComponents/Header";
 import "../FixturePageComponents/Fixture.css";
 import fethBetRouter from "../contracts/FethBetRouter";
 import linkPool from "../contracts/LinkPool";
@@ -128,7 +127,6 @@ const AdminCreateFixtures = () => {
 
   return (
     <div>
-      <Header />
       <h2>Note: this page may take time to load</h2>
       {showBadgeWarningLink ? <Badge
         state="warning"
