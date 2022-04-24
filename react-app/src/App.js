@@ -9,6 +9,7 @@ import {
   Route
   // Link
 } from "react-router-dom";
+import Fixture from './Pages/Fixture'
 
 
 class App extends React.Component {
@@ -18,6 +19,7 @@ class App extends React.Component {
         <Routes>
           <Route path="/" element = {<HomePage/>} / >
           <Route path="/app" element = {<Bet/>} /> 
+          <Route path="/fixture/:fixtureId" element= {<Fixture/>} />
           <Route path="*" element= {<ErrorPage/>} />
         </Routes>
       </Router>

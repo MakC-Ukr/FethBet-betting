@@ -18,3 +18,5 @@ So in our Firebase Database we might have to use a couple of tables. As of now I
 
 
 3. For frontend's basic services we might use thirdweb. After all, why reinvent the wheel every time. BE more efficient.
+
+4. Data for upcoming matches will be loaded inside the BetPageTable component and used only there. From there the user will see the button to place a bet on a specific match. And then a new page will open with more details of the match. The data loaded inside the tabel will probably not be used by any component to we will store it in the Table's state only. Also, when a user will place a bet, we will have to store a user's placed bets with us on our server in order be more efficient in loaidn it later. 

@@ -3,4 +3,6 @@ Roadmap
 
 Think of a good data flow model.
 Start with the smart contract. 
-Start with some baeic frontend objects: Card, Layout, Header, Footer, Sideview menu tab add
+Create basic home page
+Set a layout for the betting page
+Load data from the SportsDb website regarding upcoming matches and show it as a table on the betting page. 

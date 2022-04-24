@@ -1,7 +1,7 @@
 import React from "react";
 import "./EveryBetMatters.css";
-import image1 from "../../components/images/image-1.png";
-import image2 from "../../components/images/image-2.png";
+import image1 from "../../assets/images/image-1.png";
+import image2 from "../../assets/images/image-2.png";
 
 class EveryBetMatters extends React.Component {
   render() {
