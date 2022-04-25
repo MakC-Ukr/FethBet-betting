@@ -3,9 +3,7 @@ import { Table, Button } from "web3uikit";
 import axios from 'axios';
 import "./Header.css"
 import { Link } from "react-router-dom";
-{/* <script src="https://unpkg.com/axios/dist/axios.min.js"></script> */ }
 
-// const leagueApi = { 4328: "English Premier League",  4331: "German Bundesliga", 4332: "Italian Serie A", 4334: "French Ligue 1" , 4335: "Spanish La Liga"};
 const leagueIdsToWatch = [4328, 4331, 4332, 4334, 4335];
 
 const getTables = (self, idToWatch) => {

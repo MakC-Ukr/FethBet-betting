@@ -14,7 +14,7 @@ const leagueApi = { 4328: "English Premier League", 4331: "German Bundesliga", 4
 
 const AdminCreateFixtures = () => {
   const [currentAccount, setCurrentAccount] = useState('');
-  const [upcomingMatches, setUpcomingMatches] = useState([]);
+  // const [upcomingMatches, setUpcomingMatches] = useState([]);
   const [renderList, setRenderList] = useState({});
   const [isFetching, setIsFetching] = useState(true);
   const [showBadgeWarningLink, setShowBadgeWarningLink] = useState(false);
@@ -106,7 +106,7 @@ const AdminCreateFixtures = () => {
 
 
   async function checkLinkBalance() {
-    let a, b;
+    let a;
     a = await linkPool.methods.getLINKBalance().call();
     if (!a[1]) {
       setShowBadgeWarningLink(true);
@@ -133,7 +133,7 @@ const AdminCreateFixtures = () => {
         text="Link Pool balance less thank 10 LINK. Please recharge immediately"
       /> : ""}
       <div style={{ width: "60%" }}>
-        {currentAccount == "" ? <button onClick={connectWalletHandler}> connect wallet </button> : <h2>Wallet connected</h2>}
+        {currentAccount === "" ? <button onClick={connectWalletHandler}> connect wallet </button> : <h2>Wallet connected</h2>}
         <h1>Upcoming 3 matches for {leagueApi[leagueIdsToWatch[0]]} which fixtures need to be created</h1>
         {getTables(leagueIdsToWatch[0])}
         <h1>Upcoming 3 matches for {leagueApi[leagueIdsToWatch[1]]} which fixtures need to be created</h1>

@@ -64,6 +64,7 @@ function Fixture() {
 
     useEffect(
         () => {
+
             console.log(isFixtureCreated);
             calculateWinnings();
         }, [isFixtureCreated]
@@ -78,7 +79,7 @@ function Fixture() {
             {
                 setCheckResultHasBeenCalled(false);
             }
-            else if (winnerInContract == 0) {
+            else if (winnerInContract === 0) {
                 setCheckResultHasBeenCalled(true);
                 setDecideWinnerHasBeenCalled(false);
             }
@@ -92,24 +93,23 @@ function Fixture() {
                 const temp2 = web3.utils.fromWei(await fixtureTemp.methods.awayBets(currentAccount).call());
                 setAlreadyPlacedBetsOnHome(temp1);
                 setAlreadyPlacedBetsOnAway(temp2);
-                let winner = -1;
                 if (intHomeScore > intAwayScore) {
                     setWinnerAfterFinish(matchDetails.strHomeTeam + " has won");
-                    winner = 1;
                 }
                 else if (intHomeScore === intAwayScore) {
                     setWinnerAfterFinish("It was a draw. You may collect your bet.");
-                    winner = 2;
                 }
                 else {
                     setWinnerAfterFinish(matchDetails.strAwayTeam + " has won !");
-                    winner = 3;
                 }
                 const tempRes = await fixture.methods.calculateWinnings(currentAccount).call();
                 setWinningsCalculateFromContract(web3.utils.fromWei(tempRes));
             }
         }
     }
+
+
+
 
     const getWinnings = async () => {
         await fixture.methods.getWinnings().send({
@@ -251,10 +251,10 @@ function Fixture() {
 
     const getWinningCollector = () => {
         return (
-            <div style={{ display:"grid", gridRowGap:"10px" }}>
+            <div style={{ display: "grid", gridRowGap: "10px" }}>
                 {checkResultHasBeenCalled ? "" : stepOneHelper()}
                 {(!checkResultHasBeenCalled && decideWinnerHasBeenCalled) ? "" : stepTwoHelper()}
-                <img></img>
+                <img alt = ""></img>
                 <Card>
                     <h2>Match finished !</h2>
                     <h3>{winnerAfterFinish}</h3>
